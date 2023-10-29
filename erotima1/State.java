@@ -11,7 +11,7 @@ public class State implements Comparable<State>
 
 	
 	//constructor - fill with arguments if necessary
-	public State() 
+	public State(int[] times) 
 	{
 		this.f = 0;
         this.h = 0;
@@ -33,12 +33,12 @@ public class State implements Comparable<State>
 		this.f = s.f;
         this.g = s.g;
         this.h = s.h;
-        this.father = s.father; // you might want a deep copy here depending on usage
+        this.father = s.father; 
         this.totalTime = s.totalTime;
         this.leftSide = new ArrayList<>(s.leftSide);
         this.rightSide = new ArrayList<>(s.rightSide);
         this.torchPosition = s.torchPosition;
-        this.times = s.times; // assuming this won't be modified, so no deep copy
+        this.times = s.times; 
     }
 	
 	public int getF() 
@@ -107,7 +107,9 @@ public class State implements Comparable<State>
         this.f = this.g + this.h;
 	}
 	
-	public void print() {}
+	public void print() {
+		System.out.println("Left side: " + leftSide + " Right side: " + rightSide + " Torch on left: " + torchPosition + " Total time: " + totalTime);
+	}
 	
 	public ArrayList<State> getChildren() {return null;}
 	

@@ -20,6 +20,7 @@ public class Main {
             times[i] = Integer.parseInt(args[i + 1]);
         }
 
-        System.out.println(times);
+        State startState = new State(times);
+        State endState = null;      
     }
 }
