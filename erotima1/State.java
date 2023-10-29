@@ -92,6 +92,16 @@ public class State implements Comparable<State>
 		this.totalTime = time;
 	}
 	
+	private int heuristic() {
+        int maxTime = 0;
+        for (int index : rightSide) {
+            if (times[index] > maxTime) {
+                maxTime = times[index];
+            }
+        }
+        return maxTime;
+    }
+
 	public void evaluate() 
 	{
 		//calculate f...
