@@ -13,8 +13,8 @@ public class State implements Comparable<State>
 	//constructor - fill with arguments if necessary
 	public State(int[] times) 
 	{
-		this.f = 0;
-        this.h = 0;
+		this.f = 0;//evaluate() 
+        this.h = 0;//heuristic()
         this.g = 0;
         this.father = null;
         this.totalTime = 0;
@@ -110,8 +110,81 @@ public class State implements Comparable<State>
 	public void print() {
 		System.out.println("Left side: " + leftSide + " Right side: " + rightSide + " Torch on left: " + torchPosition + " Total time: " + totalTime);
 	}
+
+	private void move(int i, int j) {
+		// If the torch is on the left side
+		if(torchPosition) {
+			// Remove the person represented by index 'i' from the left side
+			leftSide.remove(Integer.valueOf(i));
+			
+			// Remove the person represented by index 'j' from the left side
+			leftSide.remove(Integer.valueOf(j));
+			
+			// Add the person represented by index 'i' to the right side
+			rightSide.add(i);
+			
+			// Add the person represented by index 'j' to the right side
+			rightSide.add(j);
+			
+			// Increase the totalTime by the time taken by the slower person
+			// because both walk together at the speed of the slower person
+			totalTime += Math.max(times[i], times[j]);
+		} 
+		// If the torch is on the right side
+		else {
+			// Remove the person represented by index 'i' from the right side
+			rightSide.remove(Integer.valueOf(i));
+			
+			// Remove the person represented by index 'j' from the right side
+			rightSide.remove(Integer.valueOf(j));
+			
+			// Add the person represented by index 'i' to the left side
+			leftSide.add(i);
+			
+			// Add the person represented by index 'j' to the left side
+			leftSide.add(j);
+			
+			// Increase the totalTime by the time taken by the slower person
+			totalTime += Math.max(times[i], times[j]);
+		}
+		
+		// Toggle the torch's position
+		torchPosition = !torchPosition;
+	}
 	
-	public ArrayList<State> getChildren() {return null;}
+	
+	public ArrayList<State> getChildren() {
+		// Initialize an empty list to store child states
+		ArrayList<State> children = new ArrayList<>();
+		
+		// If torchPosition is true (left), fromSide is leftSide, otherwise it's rightSide.
+		// This tells us which side of the riverbank we're moving from.
+		List<Integer> fromSide = torchPosition ? leftSide : rightSide;
+		
+		// Similarly, toSide tells us which side we're moving to.
+		// If torchPosition is true (left), toSide is rightSide, otherwise it's leftSide.
+		List<Integer> toSide = torchPosition ? rightSide : leftSide;
+		
+		// Double loop to generate combinations of either one or two people
+		// who will move across the bridge.
+		for(int i = 0; i < fromSide.size(); i++) {
+			for(int j = i; j < fromSide.size(); j++) {  // Notice that j starts from i.
+				
+				// Create a new state as a copy of the current state
+				State child = new State(this);
+				
+				// Move one or two persons (represented by their indices) across the bridge.
+				// If i is equal to j, it means only one person is moving.
+				child.move(fromSide.get(i), fromSide.get(j));
+				
+				// Add this new state to the list of children.
+				children.add(child);
+			}
+		}
+		// Return the list of all possible child states.
+		return children;
+	}
+	
 	
 	public boolean isFinal() {return true;}
 	
