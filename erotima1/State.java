@@ -40,7 +40,6 @@ public class State implements Comparable<State>
         this.torchPosition = s.torchPosition;
         this.times = s.times; // assuming this won't be modified, so no deep copy
     }
-	}
 	
 	public int getF() 
 	{
@@ -104,7 +103,8 @@ public class State implements Comparable<State>
 
 	public void evaluate() 
 	{
-		//calculate f...
+		this.h = heuristic();
+        this.f = this.g + this.h;
 	}
 	
 	public void print() {}
