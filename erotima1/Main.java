@@ -1,3 +1,7 @@
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Set;
+
 public class Main {
     public static void main(String[] args) {
         // Check if no arguments were provided
@@ -20,7 +24,17 @@ public class Main {
             times[i] = Integer.parseInt(args[i + 1]);
         }
 
+         // Create the initial state (start state) using the given times
         State startState = new State(times);
-        State endState = null;      
+        // A placeholder for the final state (goal state) once the solution is found
+        State endState = null;
+
+        // Use a priority queue for the open list to always pick the next state with the lowest f score
+        PriorityQueue<State> openList = new PriorityQueue<>();
+        // Use a set for the closed list to track visited states
+        Set<State> closedList = new HashSet<>();
+
+        // Add the initial state to the open list to start the search
+        openList.add(startState);
     }
 }
