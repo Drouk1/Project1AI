@@ -8,7 +8,7 @@ public class State implements Comparable<State>
     private List<Integer> rightSide; // stores indices of people on the right side
     private boolean torchPosition; // true if on the left side, false otherwise
     private int[] times; // times required for each person to cross
-	private int sum_times;
+
 	
 	//constructor - fill with arguments if necessary
 	public State(int[] times) 
@@ -20,18 +20,11 @@ public class State implements Comparable<State>
         this.totalTime = 0;
         this.leftSide = new ArrayList<>();
         for (int i = 0; i < times.length; i++) {
-<<<<<<< HEAD
             this.rightSide.add(i); // initially, everyone is on the right side
-=======
-            this.leftSide.add(i); // At first, everyone is on the left side
->>>>>>> 77f7597f70ec36b7986c5e027f724ceb8d6d5856
         }
         this.rightSide = new ArrayList<>();
         this.torchPosition = false; // torch starts on the right side
         this.times = times;
-		for (int i = 0; i < times.length; i++) {
-            sum_times=sum_times+times[i];
-        }
 	}
 	
 	// copy constructor
@@ -47,7 +40,6 @@ public class State implements Comparable<State>
         this.torchPosition = s.torchPosition;
         this.times = s.times; 
     }
-	
 	
 	public int getF() 
 	{
@@ -164,17 +156,14 @@ public class State implements Comparable<State>
 	public ArrayList<State> getChildren() {
 		// Initialize an empty list to store child states
 		ArrayList<State> children = new ArrayList<>();
-		List<Integer> fromSide;
-		List<Integer> toSide;
-		if (torchPosition) {  // if torch is on the left side
-			fromSide = leftSide;
-			toSide = rightSide;
-		} else {  // if torch is on the right side
-			fromSide = rightSide;
-			toSide = leftSide;
-		}
 		
-
+		// If torchPosition is true (left), fromSide is leftSide, otherwise it's rightSide.
+		// This tells us which side of the riverbank we're moving from.
+		List<Integer> fromSide = torchPosition ? leftSide : rightSide;
+		
+		// Similarly, toSide tells us which side we're moving to.
+		// If torchPosition is true (left), toSide is rightSide, otherwise it's leftSide.
+		List<Integer> toSide = torchPosition ? rightSide : leftSide;
 		
 		// Double loop to generate combinations of either one or two people
 		// who will move across the bridge.
@@ -196,21 +185,20 @@ public class State implements Comparable<State>
 		return children;
 	}
 	
-<<<<<<< HEAD
 	
 	public boolean isFinal() {
 		return rightSide.isEmpty() && torchPosition == true;
-=======
-	//goalstate check
-	public boolean isFinal() {
-		
-		return rightSide.isEmpty() && torchPosition==true && totalTime<=sum_times;
-		
->>>>>>> 77f7597f70ec36b7986c5e027f724ceb8d6d5856
 	}
 	
 	@Override
-	public boolean equals(Object obj) {return true;}
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        State state = (State) obj;
+        return torchPosition == state.torchPosition &&
+                Objects.equals(leftSide, state.leftSide) &&
+                Objects.equals(rightSide, state.rightSide);
+	}
 	
 	@Override
     public int hashCode() {
