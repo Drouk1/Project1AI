@@ -160,14 +160,17 @@ public class State implements Comparable<State>
 	public ArrayList<State> getChildren() {
 		// Initialize an empty list to store child states
 		ArrayList<State> children = new ArrayList<>();
+		List<Integer> fromSide;
+		List<Integer> toSide;
+		if (torchPosition) {  // if torch is on the left side
+			fromSide = leftSide;
+			toSide = rightSide;
+		} else {  // if torch is on the right side
+			fromSide = rightSide;
+			toSide = leftSide;
+		}
 		
-		// If torchPosition is true (left), fromSide is leftSide, otherwise it's rightSide.
-		// This tells us which side of the riverbank we're moving from.
-		List<Integer> fromSide = torchPosition ? leftSide : rightSide;
-		
-		// Similarly, toSide tells us which side we're moving to.
-		// If torchPosition is true (left), toSide is rightSide, otherwise it's leftSide.
-		List<Integer> toSide = torchPosition ? rightSide : leftSide;
+
 		
 		// Double loop to generate combinations of either one or two people
 		// who will move across the bridge.
