@@ -20,10 +20,10 @@ public class State implements Comparable<State>
         this.totalTime = 0;
         this.leftSide = new ArrayList<>();
         for (int i = 0; i < times.length; i++) {
-            this.leftSide.add(i); // initially, everyone is on the left side
+            this.rightSide.add(i); // initially, everyone is on the right side
         }
         this.rightSide = new ArrayList<>();
-        this.torchPosition = true; // torch starts on the left side
+        this.torchPosition = false; // torch starts on the right side
         this.times = times;
 	}
 	
@@ -186,13 +186,17 @@ public class State implements Comparable<State>
 	}
 	
 	
-	public boolean isFinal() {return true;}
+	public boolean isFinal() {
+		return rightSide.isEmpty() && torchPosition == true;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {return true;}
 	
 	@Override
-    public int hashCode() {return 0;}
+    public int hashCode() {
+		return Objects.hash(leftSide, rightSide, torchPosition);
+	}
 	
 	@Override
     public int compareTo(State s)
