@@ -20,7 +20,7 @@ public class State implements Comparable<State>
         this.totalTime = 0;
         this.leftSide = new ArrayList<>();
         for (int i = 0; i < times.length; i++) {
-            this.leftSide.add(i); // initially, everyone is on the left side
+            this.leftSide.add(i); // At first, everyone is on the left side
         }
         this.rightSide = new ArrayList<>();
         this.torchPosition = true; // torch starts on the left side
