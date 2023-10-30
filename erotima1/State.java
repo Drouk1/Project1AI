@@ -8,7 +8,7 @@ public class State implements Comparable<State>
     private List<Integer> rightSide; // stores indices of people on the right side
     private boolean torchPosition; // true if on the left side, false otherwise
     private int[] times; // times required for each person to cross
-
+	private int sum_times;
 	
 	//constructor - fill with arguments if necessary
 	public State(int[] times) 
@@ -25,6 +25,9 @@ public class State implements Comparable<State>
         this.rightSide = new ArrayList<>();
         this.torchPosition = true; // torch starts on the left side
         this.times = times;
+		for (int i = 0; i < times.length; i++) {
+            sum_times=sum_times+times[i];
+        }
 	}
 	
 	// copy constructor
@@ -40,6 +43,7 @@ public class State implements Comparable<State>
         this.torchPosition = s.torchPosition;
         this.times = s.times; 
     }
+	
 	
 	public int getF() 
 	{
@@ -185,8 +189,12 @@ public class State implements Comparable<State>
 		return children;
 	}
 	
-	
-	public boolean isFinal() {return true;}
+	//goalstate check
+	public boolean isFinal() {
+		
+		return rightSide.isEmpty() && torchPosition==true && totalTime<=sum_times;
+		
+	}
 	
 	@Override
 	public boolean equals(Object obj) {return true;}

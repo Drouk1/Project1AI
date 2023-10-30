@@ -36,5 +36,6 @@ public class Main {
 
         // Add the initial state to the open list to start the search
         openList.add(startState);
+        
     }
 }
