@@ -13,16 +13,17 @@ public class State implements Comparable<State>
 	//constructor - fill with arguments if necessary
 	public State(int[] times) 
 	{
-		this.f = 0;//evaluate() 
-        this.h = 0;//heuristic()
+		this.f = 0; 
+        this.h = 0;
         this.g = 0;
         this.father = null;
         this.totalTime = 0;
-        this.leftSide = new ArrayList<>();
-        for (int i = 0; i < times.length; i++) {
-            this.rightSide.add(i); // initially, everyone is on the right side
-        }
-        this.rightSide = new ArrayList<>();
+		this.leftSide = new ArrayList<>();
+		this.rightSide = new ArrayList<>();
+		for (int i = 0; i < times.length; i++) {
+			this.rightSide.add(i); // initially, everyone is on the right side
+		}
+		
         this.torchPosition = false; // torch starts on the right side
         this.times = times;
 	}
