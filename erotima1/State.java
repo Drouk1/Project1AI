@@ -186,29 +186,36 @@ public class State implements Comparable<State>
 		return children;
 	}
 	
-	
+	// Determines if the state represents the final configuration.
+	// The goal is to have all individuals on the left side (rightSide is empty) and the torch also on the left.
 	public boolean isFinal() {
 		return rightSide.isEmpty() && torchPosition == true;
 	}
-	
+
+	// Overrides the default equals method to check equality of two State objects.
+	// A state is considered equal to another if they have the same torch position and the same individuals on each side.
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        State state = (State) obj;
-        return torchPosition == state.torchPosition &&
-                Objects.equals(leftSide, state.leftSide) &&
-                Objects.equals(rightSide, state.rightSide);
+		if (obj == null || getClass() != obj.getClass()) return false;
+		State state = (State) obj;
+		return torchPosition == state.torchPosition &&
+				Objects.equals(leftSide, state.leftSide) &&
+				Objects.equals(rightSide, state.rightSide);
 	}
-	
+
+	// Overrides the default hashCode method to provide a unique hash for each state based on its attributes.
 	@Override
-    public int hashCode() {
+	public int hashCode() {
 		return Objects.hash(leftSide, rightSide, torchPosition);
 	}
-	
+
+	// Compares two states based on their heuristic scores (f).
+	// Useful for sorting states or inserting into a priority structure.
 	@Override
-    public int compareTo(State s)
-    {
-        return Double.compare(this.f, s.getF()); // compare based on the heuristic score.
-    }
+	public int compareTo(State s) {
+		return Double.compare(this.f, s.getF()); // Compare based on the heuristic score (f).
+	}
+	
+	
 }
