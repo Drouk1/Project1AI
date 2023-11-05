@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,6 +55,7 @@ public class Main {
             // Remove the identified state with the lowest f value from the open list since it's about to be explored
             openList.remove(currentState);
             
+            
             // Check if the current state is the goal state
             if(currentState.isFinal()) {
                 // If it's the goal state, store it as the end state and break out of the search loop
@@ -79,7 +81,27 @@ public class Main {
                     openList.add(child);
                 }
             }
-        }        
+            closedList.add(currentState);
+
+        }
+        
+            if(endState != null) {
+            System.out.println("Solution found:");
+            List<State> path = new ArrayList<>();
+            State state = endState;
+            // Traverse the path from the goal to the start state using parent pointers
+            while(state != null) {
+                path.add(state);
+                state = state.getFather();
+            }
+            // Reverse the path to get the correct order from start to goal
+            Collections.reverse(path);
+            for(State s : path) {
+                s.print(); // Print each state in the solution path
+            }
+        } else {
+            System.out.println("No solution found."); // Indicate when no solution is found
+        }
 
     }
 }

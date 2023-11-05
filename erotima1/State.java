@@ -112,46 +112,82 @@ public class State implements Comparable<State>
 		System.out.println("Left side: " + leftSide + " Right side: " + rightSide + " Torch on left: " + torchPosition + " Total time: " + totalTime);
 	}
 
-	private void move(int i, int j) {
-		// If the torch is on the left side
-		if(torchPosition) {
-			// Remove the person represented by index 'i' from the left side
-			leftSide.remove(Integer.valueOf(i));
+	// private void move(int i, int j) {
+	// 	// If the torch is on the left side
+	// 	if(torchPosition) {
+	// 		// Remove the person represented by index 'i' from the left side
+	// 		leftSide.remove(Integer.valueOf(i));
 			
-			// Remove the person represented by index 'j' from the left side
-			leftSide.remove(Integer.valueOf(j));
+	// 		// Remove the person represented by index 'j' from the left side
+	// 		leftSide.remove(Integer.valueOf(j));
 			
-			// Add the person represented by index 'i' to the right side
-			rightSide.add(i);
+	// 		// Add the person represented by index 'i' to the right side
+	// 		rightSide.add(i);
 			
-			// Add the person represented by index 'j' to the right side
-			rightSide.add(j);
+	// 		// Add the person represented by index 'j' to the right side
+	// 		rightSide.add(j);
 			
-			// Increase the totalTime by the time taken by the slower person
-			// because both walk together at the speed of the slower person
-			totalTime += Math.max(times[i], times[j]);
-		} 
-		// If the torch is on the right side
-		else {
-			// Remove the person represented by index 'i' from the right side
-			rightSide.remove(Integer.valueOf(i));
+	// 		// Increase the totalTime by the time taken by the slower person
+	// 		// because both walk together at the speed of the slower person
+	// 		totalTime += Math.max(times[i], times[j]);
+	// 	} 
+	// 	// If the torch is on the right side
+	// 	else {
+	// 		// Remove the person represented by index 'i' from the right side
+	// 		rightSide.remove(Integer.valueOf(i));
 			
-			// Remove the person represented by index 'j' from the right side
-			rightSide.remove(Integer.valueOf(j));
+	// 		// Remove the person represented by index 'j' from the right side
+	// 		rightSide.remove(Integer.valueOf(j));
 			
-			// Add the person represented by index 'i' to the left side
-			leftSide.add(i);
+	// 		// Add the person represented by index 'i' to the left side
+	// 		leftSide.add(i);
 			
-			// Add the person represented by index 'j' to the left side
-			leftSide.add(j);
+	// 		// Add the person represented by index 'j' to the left side
+	// 		leftSide.add(j);
 			
-			// Increase the totalTime by the time taken by the slower person
-			totalTime += Math.max(times[i], times[j]);
-		}
+	// 		// Increase the totalTime by the time taken by the slower person
+	// 		totalTime += Math.max(times[i], times[j]);
+	// 	}
 		
-		// Toggle the torch's position
+		
+		
+	// 	// Toggle the torch's position
+	// 	torchPosition = !torchPosition;
+	// }
+
+	private void move(int i, int j) {
+		int moveTime;
+		
+		if(torchPosition) {  // If torch is on the left
+			leftSide.remove(Integer.valueOf(i));
+			if(i != j) {  // If not the same person, move the second person
+				leftSide.remove(Integer.valueOf(j));
+			}
+			rightSide.add(i);
+			if(i != j) {
+				rightSide.add(j);
+			}
+			moveTime = (i == j) ? times[i] : Math.max(times[i], times[j]);
+		} else {  // If torch is on the right
+			rightSide.remove(Integer.valueOf(i));
+			if(i != j) {
+				rightSide.remove(Integer.valueOf(j));
+			}
+			leftSide.add(i);
+			if(i != j) {
+				leftSide.add(j);
+			}
+			moveTime = (i == j) ? times[i] : Math.max(times[i], times[j]);
+		}
+	
+		totalTime += moveTime;
 		torchPosition = !torchPosition;
+		
+		// Sort the lists to maintain order (for equals and hashCode checks)
+		Collections.sort(leftSide);
+		Collections.sort(rightSide);
 	}
+	
 	
 	
 	public ArrayList<State> getChildren() {
@@ -189,7 +225,7 @@ public class State implements Comparable<State>
 	// Determines if the state represents the final configuration.
 	// The goal is to have all individuals on the left side (rightSide is empty) and the torch also on the left.
 	public boolean isFinal() {
-		return rightSide.isEmpty() && torchPosition == true;
+		return rightSide.isEmpty() && torchPosition ;
 	}
 
 	// Overrides the default equals method to check equality of two State objects.
