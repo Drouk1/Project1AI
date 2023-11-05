@@ -126,34 +126,60 @@ public class State implements Comparable<State>
     }
 
 	private void move(int i, int j) {
+		// Variable to store the time taken for the current move.
 		int moveTime;
-		
-		if(torchPosition) {  // If torch is on the left
+	
+		// Check if the torch is currently on the left side.
+		if(torchPosition) {
+			// Remove the first person from the left side.
 			leftSide.remove(Integer.valueOf(i));
-			if(i != j) {  // If not the same person, move the second person
+	
+			// If a second distinct person is also moving, remove them from the left side.
+			if(i != j) {
 				leftSide.remove(Integer.valueOf(j));
 			}
+	
+			// Add the first person to the right side.
 			rightSide.add(i);
+	
+			// If a second distinct person is also moving, add them to the right side.
 			if(i != j) {
 				rightSide.add(j);
 			}
+	
+			// Calculate the time taken for this move. 
+			// If only one person is moving, it's their time. If two people are moving, it's the maximum of their times.
 			moveTime = (i == j) ? times[i] : Math.max(times[i], times[j]);
-		} else {  // If torch is on the right
+		} else {  // If the torch is currently on the right side.
+			// Remove the first person from the right side.
 			rightSide.remove(Integer.valueOf(i));
+	
+			// If a second distinct person is also moving, remove them from the right side.
 			if(i != j) {
 				rightSide.remove(Integer.valueOf(j));
 			}
+	
+			// Add the first person to the left side.
 			leftSide.add(i);
+	
+			// If a second distinct person is also moving, add them to the left side.
 			if(i != j) {
 				leftSide.add(j);
 			}
+	
+			// Calculate the time taken for this move. 
+			// Similar logic as above.
 			moveTime = (i == j) ? times[i] : Math.max(times[i], times[j]);
 		}
 	
+		// Update the total time with the time of the current move.
 		totalTime += moveTime;
+	
+		// Toggle the torch's position.
 		torchPosition = !torchPosition;
-		
-		// Sort the lists to maintain order (for equals and hashCode checks)
+	
+		// Sort the lists of people on both sides. This ensures consistent order which is helpful
+		// for operations like equals and hashCode checks.
 		Collections.sort(leftSide);
 		Collections.sort(rightSide);
 	}
