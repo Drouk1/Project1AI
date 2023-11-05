@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 public class State implements Comparable<State>
 {
 	private int f, h, g;
@@ -109,51 +110,20 @@ public class State implements Comparable<State>
 	}
 	
 	public void print() {
-		System.out.println("Left side: " + leftSide + " Right side: " + rightSide + " Torch on left: " + torchPosition + " Total time: " + totalTime);
-	}
+		 // The leftSide list represents the destination side.
+        String left = "Left side: " + leftSide.stream().map(i -> String.valueOf(times[i])).collect(Collectors.joining(", "));
 
-	// private void move(int i, int j) {
-	// 	// If the torch is on the left side
-	// 	if(torchPosition) {
-	// 		// Remove the person represented by index 'i' from the left side
-	// 		leftSide.remove(Integer.valueOf(i));
-			
-	// 		// Remove the person represented by index 'j' from the left side
-	// 		leftSide.remove(Integer.valueOf(j));
-			
-	// 		// Add the person represented by index 'i' to the right side
-	// 		rightSide.add(i);
-			
-	// 		// Add the person represented by index 'j' to the right side
-	// 		rightSide.add(j);
-			
-	// 		// Increase the totalTime by the time taken by the slower person
-	// 		// because both walk together at the speed of the slower person
-	// 		totalTime += Math.max(times[i], times[j]);
-	// 	} 
-	// 	// If the torch is on the right side
-	// 	else {
-	// 		// Remove the person represented by index 'i' from the right side
-	// 		rightSide.remove(Integer.valueOf(i));
-			
-	// 		// Remove the person represented by index 'j' from the right side
-	// 		rightSide.remove(Integer.valueOf(j));
-			
-	// 		// Add the person represented by index 'i' to the left side
-	// 		leftSide.add(i);
-			
-	// 		// Add the person represented by index 'j' to the left side
-	// 		leftSide.add(j);
-			
-	// 		// Increase the totalTime by the time taken by the slower person
-	// 		totalTime += Math.max(times[i], times[j]);
-	// 	}
-		
-		
-		
-	// 	// Toggle the torch's position
-	// 	torchPosition = !torchPosition;
-	// }
+        // The family starts on the right, so the rightSide list represents the starting side.
+        String right = "Right side: " + rightSide.stream().map(i -> String.valueOf(times[i])).collect(Collectors.joining(", "));
+       
+        // The torch position is represented by the torchPosition boolean; if true, the torch is on the left side.
+        String torch = "Torch on " + (torchPosition ? "left" : "right");
+        // The time string represents the total time elapsed.
+        String time = "Total time: " + totalTime;
+
+        // Print out the state with the family starting on the right and moving to the left.
+        System.out.println( left + " | " + right + " | " + torch + " | " + time);
+    }
 
 	private void move(int i, int j) {
 		int moveTime;
