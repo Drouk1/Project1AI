@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
+
         // Check if no arguments were provided
         if(args.length < 1) {
             // Print an error message indicating the problem
@@ -85,7 +86,7 @@ public class Main {
 
         }
         
-            if(endState != null) {
+        if(endState != null) {
             System.out.println("Solution found:");
             List<State> path = new ArrayList<>();
             State state = endState;

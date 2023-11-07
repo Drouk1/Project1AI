@@ -93,15 +93,22 @@ public class State implements Comparable<State>
 		this.totalTime = time;
 	}
 	
+	// Definition of the heuristic function.
 	private int heuristic() {
-        int maxTime = 0;
-        for (int index : rightSide) {
-            if (times[index] > maxTime) {
-                maxTime = times[index];
-            }
-        }
-        return maxTime;
-    }
+		// Initialize the maximum time to 0.
+		int maxTime = 0;
+		// Iterate through all family members who are currently on the right side of the bridge.
+		for (int index : rightSide) {
+			// Check if the current family member's time to cross the bridge is greater than the maxTime recorded so far.
+			if (times[index] > maxTime) {
+				maxTime = times[index];
+			}
+		}
+
+		// Return the maximum time found.
+		return maxTime;
+	}
+
 
 	public void evaluate() 
 	{
@@ -145,7 +152,7 @@ public class State implements Comparable<State>
 			// If a second distinct person is also moving, add them to the right side.
 			if(i != j) {
 				rightSide.add(j);
-			}
+			}	
 	
 			// Calculate the time taken for this move. 
 			// If only one person is moving, it's their time. If two people are moving, it's the maximum of their times.
