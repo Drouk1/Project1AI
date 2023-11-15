@@ -116,21 +116,37 @@ public class State implements Comparable<State>
         this.f = this.g + this.h;
 	}
 	
+	
 	public void print() {
-		 // The leftSide list represents the destination side.
-        String left = "Left side: " + leftSide.stream().map(i -> String.valueOf(times[i])).collect(Collectors.joining(", "));
-
-        // The family starts on the right, so the rightSide list represents the starting side.
-        String right = "Right side: " + rightSide.stream().map(i -> String.valueOf(times[i])).collect(Collectors.joining(", "));
-       
-        // The torch position is represented by the torchPosition boolean; if true, the torch is on the left side.
-        String torch = "Torch on " + (torchPosition ? "left" : "right");
-        // The time string represents the total time elapsed.
-        String time = "Total time: " + totalTime;
-
-        // Print out the state with the family starting on the right and moving to the left.
-        System.out.println( left + " | " + right + " | " + torch + " | " + time);
-    }
+		// Initialize strings to hold the representations of the left and right sides.
+		String left = "Left side: ";
+		String right = "Right side: ";
+	
+		// Append the times for each side to their respective strings.
+		for (int index : leftSide) {
+			left += times[index] + ", ";
+		}
+		for (int index : rightSide) {
+			right += times[index] + ", ";
+		}
+	
+		// Remove the last comma and space for a cleaner look.
+		if (!leftSide.isEmpty()) {
+			left = left.substring(0, left.length() - 2);
+		}
+		if (!rightSide.isEmpty()) {
+			right = right.substring(0, right.length() - 2);
+		}
+	
+		// Determine the position of the torch.
+		String torchPositionStr = "Torch on " + (torchPosition ? "left" : "right");
+		
+		// Build the string for total time.
+		String totalTimeStr = "Total time: " + totalTime;
+	
+		// Print the final state representation.
+		System.out.println(right + " | " + left + " | " + torchPositionStr + " | " + totalTimeStr);
+	}
 
 	private void move(int i, int j) {
 		// Variable to store the time taken for the current move.
@@ -190,20 +206,21 @@ public class State implements Comparable<State>
 		Collections.sort(leftSide);
 		Collections.sort(rightSide);
 	}
-	
-	
-	
+
 	public ArrayList<State> getChildren() {
 		// Initialize an empty list to store child states
 		ArrayList<State> children = new ArrayList<>();
+		List<Integer> fromSide;
+		List<Integer> toSide;
+		if (torchPosition) {  // if torch is on the left side
+			fromSide = leftSide;
+			toSide = rightSide;
+		} else {  // if torch is on the right side
+			fromSide = rightSide;
+			toSide = leftSide;
+		}
 		
-		// If torchPosition is true (left), fromSide is leftSide, otherwise it's rightSide.
-		// This tells us which side of the riverbank we're moving from.
-		List<Integer> fromSide = torchPosition ? leftSide : rightSide;
-		
-		// Similarly, toSide tells us which side we're moving to.
-		// If torchPosition is true (left), toSide is rightSide, otherwise it's leftSide.
-		List<Integer> toSide = torchPosition ? rightSide : leftSide;
+
 		
 		// Double loop to generate combinations of either one or two people
 		// who will move across the bridge.
@@ -255,6 +272,5 @@ public class State implements Comparable<State>
 	public int compareTo(State s) {
 		return Double.compare(this.f, s.getF()); // Compare based on the heuristic score (f).
 	}
-	
 	
 }
