@@ -145,7 +145,7 @@ public class State implements Comparable<State>
 		String totalTimeStr = "Total time: " + totalTime;
 	
 		// Print the final state representation.
-		System.out.println(right + " | " + left + " | " + torchPositionStr + " | " + totalTimeStr);
+		System.out.println(left + " | " + right + " | " + torchPositionStr + " | " + totalTimeStr);
 	}
 
 	private void move(int i, int j) {
